@@ -4,7 +4,7 @@ from googleapiclient.discovery import build
 import time
 
 # Authenticate with Google Sheets
-creds = Credentials.from_service_account_file('files/credentials.json')
+creds = Credentials.from_service_account_file('extras/credentials.json')
 service = build('sheets', 'v4', credentials=creds)
 
 spreadsheet_id = "13rgsyFiA7URNNE2XNCFvIqkMdQzoBJXURiQBtVsoWqY"
@@ -12,10 +12,10 @@ spreadsheet_id = "13rgsyFiA7URNNE2XNCFvIqkMdQzoBJXURiQBtVsoWqY"
 global conn, cursor
 
 conn = pg.connect(
-    host="dpg-cqb3njo8fa8c73b0bn8g-a.frankfurt-postgres.render.com",
-    database="botdb_hc6i",
-    user="botdb_hc6i_user",
-    password="eP6HxjZuBxuevilm7qNVPhsK75cAWsbD",
+    host="dpg-cqitjr8gph6c738u4sp0-a.frankfurt-postgres.render.com",
+    database="tarbotdb",
+    user="sreo",
+    password="4INdhZzCVyZ7GagHBnJoPp38sAqg3iOS",
     port="5432"
 )
 
@@ -75,8 +75,14 @@ def checked_users(sheet_name, table_name):
                 for row in values:
                     print(f"{row[1]}'s number is {row[0]}")
                     if len(row) >= 2:
-                        cursor.execute(f"INSERT INTO {table_name} (name, phone_num) VALUES (%s, %s)", (row[1], row[0]))
-                        conn.commit()
+                        cursor.execute(f"SELECT * FROM {table_name} WHERE phone_number = '{row[0]}'")
+                        result = cursor.fetchone()
+                        if result == None:
+                            print(f"Adding {row[1]} ({row[0]}) to the database.")
+                            cursor.execute(f"INSERT INTO {table_name} (name, phone_number, book_id) VALUES (%s, %s, %s)", (row[1], row[0], row[2]))
+                            conn.commit()
+                        else:
+                            print(f'{row[1]} already exists in the database ')
                         time.sleep(1)
         except Exception as e:
             print(e)
@@ -84,4 +90,6 @@ def checked_users(sheet_name, table_name):
 
 def google_sheets_imports():
     all_users('All', 'users')
-    checked_users('Chack', 'checked_users')
+    checked_users('Chack', 'end_users')
+
+google_sheets_imports()

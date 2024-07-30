@@ -10,6 +10,7 @@ import asyncio
 creds = Credentials.from_service_account_file('extras/credentials.json')
 service = build('sheets', 'v4', credentials=creds)
 
+
 spreadsheet_id = "13rgsyFiA7URNNE2XNCFvIqkMdQzoBJXURiQBtVsoWqY"
 
 global conn, cursor, stop_event, import_thread, scheduler
@@ -105,7 +106,7 @@ async def google_sheets_imports():
 async def import_data():
     while not stop_event.is_set():
         await google_sheets_imports()
-        await asyncio.sleep(60) 
+        await asyncio.sleep(1200) 
 
 def run_import_data():
     global loop

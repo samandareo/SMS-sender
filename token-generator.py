@@ -91,5 +91,4 @@ async def generate_token():
             if res.get('status') == 'success':
                 await execute_query(f"UPDATE test SET is_sent = 'true' WHERE id = {user['id']}")
                 print(f"Message sent to {user['name']} ({user['phone_number']})")
-    await report()
 

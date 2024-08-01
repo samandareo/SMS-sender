@@ -62,6 +62,6 @@ def change_text():
 
 if __name__ == '__main__':
     try:
-        app.run(debug=True)
+        app.run(host="0.0.0.0",debug=True)
     except (KeyboardInterrupt, SystemExit):
         scheduler.shutdown()

@@ -1,9 +1,15 @@
 from flask import Flask, request, jsonify, render_template
+from apscheduler.schedulers.background import BackgroundScheduler
 import json
 import db
+import generatorSMS
 
 app = Flask(__name__)
 
+# Initialize the scheduler
+scheduler = BackgroundScheduler()
+scheduler.add_job(generatorSMS.generate_token, 'interval', minutes=20)
+scheduler.start()
 
 @app.route('/text')
 def text():
@@ -55,4 +61,7 @@ def change_text():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    try:
+        app.run(debug=True)
+    except (KeyboardInterrupt, SystemExit):
+        scheduler.shutdown()

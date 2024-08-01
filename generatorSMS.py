@@ -49,8 +49,8 @@ async def make_request(name, phone_number, text, link):
         'Authorization': f'Bearer {token[0]["value"]}',
     }
     data = {
-        'mobile_phone': phone_number,
-        'message': "Bu Eskiz dan test",
+        'mobile_phone': f'+{phone_number}',
+        'message': f"Assalomu alaykum, {name}!\nSizni qiziqtirgan kitobchani quyidagi link orqali yuklab olishingiz mumkin!\n\nLink : {link}",
         'from': "4546",
         'callback_url': "http://0000.uz/test.php"
     }
@@ -86,7 +86,7 @@ async def generate_token():
     if users_count[0]['count'] > 0:
         users = await fetch_query("SELECT * FROM test WHERE is_sent = 'false'")
         for user in users:
-            token = f"https://t.me/dilshodarbot?start={user['phone_number']}_{user['book_id']}"
+            token = f"https://t.me/TheWolfCorpbot?start={user['phone_number']}_{user['book_id']}"
             res = await make_request(user['name'], user['phone_number'], text, token)
             if res.get('status') == 'success':
                 await execute_query(f"UPDATE test SET is_sent = 'true' WHERE id = {user['id']}")

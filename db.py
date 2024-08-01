@@ -93,11 +93,10 @@ async def checked_users(sheet_name, table_name):
                     else:
                         print(f'{row[1]} already exists in the database.')
                 await asyncio.sleep(2)
-        except Exception as e:
-            print(e)
-        finally:
             cursor.execute(f"UPDATE rows_count SET count = {counter} WHERE name = '{table_name}'")
             conn.commit()
+        except Exception as e:
+            print(e)
 
 async def google_sheets_imports():
     await all_users('All', 'users')

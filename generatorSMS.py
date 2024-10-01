@@ -4,10 +4,10 @@ import requests
 import json
 
 DATABASE_CONFIG = {
-    'host': "dpg-cqitjr8gph6c738u4sp0-a.frankfurt-postgres.render.com",
-    'database': "tarbotdb",
-    'user': "sreo",
-    'password': "4INdhZzCVyZ7GagHBnJoPp38sAqg3iOS",
+    'host': "host-name",
+    'database': "database_name",
+    'user': "username",
+    'password': "password",
     'port': "5432"
 }
 
